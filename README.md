@@ -2,15 +2,14 @@
 This repo will contain all the code and files to reproduce our final project for ECE 470, the Bartender. In design, the robot will take an input as the choice of drink. The robot will then pick up and mix wines according to the programmed recipes. Then, the robot will place the mixed wine in front of the customer. Currently, the repo is currently under development. 
 
 ## TO DO:
-- Fix launch file, the environment file.
-- Figure out how to save and launch the environment file in Gazebo (save as a world does not work).
-- Fix the outputs from the camera. 
-- Design the environment.
-- Program the robot.
+- Fix inverse dynamics in webots.
+- motion planning.
 
 ## Dependencies
-- Gazebo #
-- Python #
+- Webots R2021b
+- Python 3.8
+- NumPy 0.21
+- modern_robotics
 
 ## How to Run
 - This will be updated in following updates.

@@ -1,9 +1,8 @@
 # ECE 470 Final Project: The Bartender
-This repo will contain all the code and files to reproduce our final project for ECE 470, the Bartender. In design, the robot will take an input as the choice of drink. The robot will then pick up and mix wines according to the programmed recipes. Then, the robot will place the mixed wine in front of the customer. Currently, the repo is currently under development. 
+This repo contains the files to reproduce our final project for ECE 470, the Bartender. The robot is built and simulated like a bartender. The user can choose a choice with a user input. Then, the robot will be able to pick up bottles and pour them into the cup. The motions are done with both inverse kinematics and forward kinematics.
 
-## TO DO:
-- Fix inverse dynamics in webots.
-- motion planning.
+## Configuration
+![c9e00220066b0ce274ec207ab7ae508](https://user-images.githubusercontent.com/53772888/146290339-9583cca3-ceb3-450b-9df4-9a3c416f7cd0.png)
 
 ## Dependencies
 - Webots R2021b
@@ -12,8 +11,13 @@ This repo will contain all the code and files to reproduce our final project for
 - modern_robotics
 
 ## How to Run
-- This will be updated in following updates.
-
+- Download Webots R2021b.
+- Start a blank project, and name .wbt as final_470.wbt.
+- Replace final_470.wbt with the file in this repo.
+- Use controller wizard to create a blank controller. 
+- Copy ur3_controller.py and utils.py into the controller folder you just created.
+- Restart Webots.
+ 
 ### Contact
 - John(wei33@illinois.edu)
 - Aditya(asdutt2@illinois.edu)

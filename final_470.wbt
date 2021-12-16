@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.09173048541155385 -0.9715105438834701 -0.2185240974570189 2.367144303379284
-  position 0.5971927097216971 3.0610373797826465 -7.33357471537958
+  orientation 0.06390758870437818 -0.9530142201948809 -0.29610760917668955 3.547304075717816
+  position 4.501293401630172 3.9467640406854785 -7.959423181258737
 }
 TexturedBackground {
 }
@@ -15,100 +15,53 @@ RectangleArena {
   floorSize 20 20
 }
 UR3e {
-  hidden position_0_0 1.2466861467403989e-05
-  hidden rotation_1 0 0 1 1.2466849708881075e-05
-  hidden position_1_0 1.9406205933299646e-05
-  hidden rotation_2 0 1 0 1.5708154062059332
-  hidden position_2_0 -2.164679620349161e-05
-  hidden rotation_3 0 -1 0 2.164678715914043e-05
-  hidden position_3_0 2.4935790408555566e-05
-  hidden rotation_4 0 1 0 1.570820935790408
-  hidden position_4_0 -1.7191985823699713e-05
-  hidden rotation_5 0 0 -1 1.7191988302577128e-05
-  hidden position_5_0 1.8949859718861786e-05
-  hidden rotation_6 0 1 0 1.894984834599963e-05
-  hidden position_7_0 -5.8191733285392435e-05
-  hidden position_7_1 5.154588462466678e-05
-  hidden position_7_2 0.4999755294784781
-  hidden rotation_8 0.7068252250943796 0.7073882249951053 -1.7565695704447087e-05 3.141556835861406
-  hidden position_8_0 0.49998001910937884
-  hidden rotation_9 0 0 1 0.4504800191093812
-  hidden position_9_0 0.39998792279401907
-  hidden rotation_10 0 0 -1 0.12001207416949008
-  hidden position_10_0 -0.30000244782095487
-  hidden rotation_11 0 0 -1 0.24770244782095435
-  hidden rotation_12 0.7068252247816704 0.7073882252074749 2.1216970401374207e-05 3.141634462944456
-  hidden position_12_0 0.4999825846515463
-  hidden rotation_13 0 0 0.9999999999999999 0.4504825846515481
-  hidden position_13_0 0.3999891913005414
-  hidden rotation_14 0 0 -1 0.12001080869945192
-  hidden position_14_0 -0.30000234708291385
-  hidden rotation_15 0 0 -1 0.24770234708291347
-  hidden rotation_16 0 0 1 0.4504755294784801
-  hidden position_16_0 0.4000000000010759
-  hidden rotation_17 0 0 -0.9999999999999999 0.11999999999891793
-  hidden position_17_0 -0.29999999999999916
-  hidden rotation_18 0 0 -1 0.2476999999999987
-  translation 3.61 0.8 -3.78
+  translation 2.4 0.73 -3.78
   controller "ur3_controller"
   toolSlot [
+    Transform {
+      translation 0.56 -0.121226 -0.436241
+      rotation -0.5773502691896258 -0.5773502691896258 0.5773502691896258 2.0944
+      children [
+        Camera {
+          rotation -9.187868967738345e-08 0.991444888610673 0.13052598533534054 3.14159
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Cylinder {
+                height 0.1
+                radius 0.05
+              }
+            }
+          ]
+        }
+      ]
+    }
     Robotiq3fGripper {
     }
-    DistanceSensor {
-    }
   ]
-}
-Solid {
-  translation 3.5759273742979234 0.3425827117280163 -3.800818476966557
-  rotation 0.38837443975857094 -3.7542333875676645e-05 -0.9215016511828883 0.015318168609378714
-  scale 5 5 5
-  children [
-    Shape {
-      appearance PBRAppearance {
-      }
-      geometry Cylinder {
-        height 0.18
-        radius 0.05
-      }
-    }
-  ]
-  boundingObject Cylinder {
-    height 0.18
-    radius 0.06
-  }
-  physics Physics {
-  }
 }
 Pedestrian {
-  translation 5.0356 1.27 -4.12011
+  translation 4.3856 1.27 -4.12011
   rotation 0 1 0 -1.5707953071795862
 }
 WaterBottle {
-  translation 3.1783778307720536 0.7379144984398684 -3.509639944018624
+  translation 2.48838 0.739519 -4.38964
   rotation -0.011187277552909406 -1.0440023038126923e-05 -0.9999374203978767 0.002366996468936528
   name "wine"
 }
 BeerBottle {
-  translation 3.1945183925190985 0.740466963355436 -4.572340020959843
+  translation 2.42452 0.741593 -3.33234
   rotation -0.03164045457339435 -2.2559869059302524e-05 -0.9994993152200962 0.001417730047714204
   name "beer"
-}
-BeerBottle {
-  translation 3.182682186275685 0.740467755964963 -4.05436001483996
-  rotation -0.022378155514488858 -1.8892197354253645e-05 -0.9997495775437238 0.0014280144813319882
-  name "rug"
 }
 Table {
   translation 2.81411 -8.88178e-16 -3.89862
   rotation 0 1 0 -1.5707953071795862
   name "table(1)"
 }
-Table {
-  translation 4.34896 -3.61655e-14 -3.91608
-  rotation 0 1 0 1.5708
-}
 Solid {
-  translation 4.049124143837134 0.8896882118019823 -4.159183575674777
+  translation 2.56448 0.864499 -4.25031
   rotation -0.00833446281212111 0.8586970235950087 0.5124158061561984 0.046257615886967814
   children [
     Shape {
@@ -122,10 +75,10 @@ Solid {
   ]
   name "cup"
   boundingObject Cylinder {
-    height 0.3
-    radius 0.06
+    height 0.19535021555524681
+    radius 0.05835722275630407
   }
   physics Physics {
   }
-  radarCrossSection 0.2
+  radarCrossSection 0.18
 }

@@ -2,17 +2,20 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot
+from controller import Robot, Camera
 import numpy as np
 from scipy.linalg import expm
 from utils import inverse
 import time
+import PySimpleGUI as sg
 # create the Robot instance.
 robot = Robot()
 
 # get the time step of the current world.
 timestep = int(robot.getBasicTimeStep())
 
+camera = robot.getDevice('camera')
+camera.enable(4*timestep)
 
 joint1 = robot.getDevice("shoulder_pan_joint")
 joint2 = robot.getDevice("shoulder_lift_joint")
@@ -60,34 +63,180 @@ def grap(angle1=0, angle2=0, angle3=0, angle4=0, angle5=0, angle6=0, angle7=0, a
     palm_finger_2_joint.setPosition(angle10)
     palm_finger_1_joint.setPosition(angle11)
 
+#grap
+# grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
 
-grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
-robot.step(400)    
-move_arm(-np.pi/8, -np.pi/6, 0, 0, 0, 0)
-robot.step(400)
-move_arm(-np.pi/4, -np.pi/6, 0, 0, 0, 0)
-robot.step(400)
-move_arm(-np.pi/4, 0, 0, 0, 0,0)
-robot.step(400) 
+#release
+# grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+
+input = 0
+
+sg.theme('DarkAmber')   # Add a touch of color
+# All the stuff inside your window.
+layout = [  [sg.Text('Enter 1 for beer, 2 for water, and 3 for a mix.')],
+            [sg.Text('Enter your choice: '), sg.InputText()],
+            [sg.Button('Ok'), sg.Button('Cancel')] ]
+
+# Create the Window
+window = sg.Window('Input Box', layout)
+# Event Loop to process "events" and get the "values" of the inputs
+while True:
+    event, values = window.read()
+    input = int(values[0])
+    if event == sg.WIN_CLOSED or event == 'Cancel' or event == 'Ok': # if user closes window or clicks cancel
+        break
+    print('You entered ', values[0])
+
+window.close()
+
+print(input)
+# open gripper
 grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
-# T_bottle_1 = np.array([ [1, 0, 0, 0.5],
-#                         [0, 1, 0, 0.2],
-#                         [0, 0, 1, 0.2],
-#                         [0, 0, 0, 1] ] )
-# thetalist = np.array( [0, 0, 0, 0, 0, 0] )
-# angles, success = inverse(thetalist, T_bottle_1)
+robot.step(1100)
 
-# move_arm( float(angles[0]), float(angles[1]), float(angles[2]), float(angles[3]),\
-#             float(angles[4]), float(angles[5]))
+#get cup
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.20, 0.3, 0.1)
+move_arm(theta1, theta2, theta3, theta4, theta5, theta6  )
+robot.step(1100) 
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.24, 0.45, 0.1)
+move_arm(theta1, theta2, theta3, theta4, theta5, theta6  )
+robot.step(1100)
+grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
+robot.step(1100)
 
-# robot.step(2000)
-# T_bottle_1 = np.array([ [1, 0, 0, 0.5],
-#                         [0, 1, 0, 0],
-#                         [0, 0, 1, 0.2],
-#                         [0, 0, 0, 1] ] )
-# thetalist = np.array( [0, 0, 0, 0, 0, 0] )
-# angles, success = inverse(thetalist, T_bottle_1)
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.3)
+move_arm(theta1, theta2, theta3, theta4, theta5, theta6  )
+robot.step(1100)
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.1)
+move_arm(theta1, theta2, theta3, theta4, theta5, theta6  )
+robot.step(1100)
+grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+robot.step(1100)
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.35)
+move_arm(theta1 + 0.1, theta2, theta3, theta4, theta5, theta6  )
+robot.step(1100)
 
-# move_arm( float(angles[0]), float(angles[1]), float(angles[2]), float(angles[3]),\
-#             float(angles[4]), float(angles[5]))
 
+if input == 1:
+    # get beer bottle
+    move_arm(theta1, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+    move_arm(-np.pi, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+    move_arm(-np.pi, 0, 0, 0, 0, 0)
+    robot.step(1100)
+    move_arm(-3/4*np.pi+0.03, 0, 0, 0, -np.pi/5, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=1, angle8=1, angle9=1, angle10=0, angle11=0)
+    robot.step(1100)
+    theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.3)
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5, theta6  )
+    robot.step(1100)
+    move_arm(theta1-0.2, theta2, theta3, theta4, theta5+0.35, -np.pi/2  )
+    robot.step(1100)
+
+    # return beer bottle
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5+0.35, theta6  )
+    robot.step(1100)
+    move_arm(-3/4*np.pi+0.03, 0, 0, 0, -np.pi/5, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+    robot.step(1100)
+    move_arm(-np.pi, 0, 0, 0, 0, 0.1)
+    robot.step(1100)
+    move_arm(-np.pi, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+
+elif input == 2:
+    # get water bottle
+    move_arm(0, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    move_arm(-np.pi/3-0.02, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
+    robot.step(1100)
+    theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.3)
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5, theta6  )
+    robot.step(1100)
+    move_arm(theta1-0.3, theta2, theta3, theta4, theta5+0.35, -np.pi/2  )
+    robot.step(1100)
+
+    # return water bottle
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5+0.35, theta6  )
+    robot.step(1100)
+    move_arm(-np.pi/3-0.02, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+    robot.step(1100)
+    move_arm(0, -np.pi, 0, np.pi, 0.1, 0)
+    robot.step(1100)
+    move_arm(0, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+
+elif input == 3:
+    # get water bottle
+    move_arm(0, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    move_arm(-np.pi/3-0.02, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
+    robot.step(1100)
+    theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.3)
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5, theta6  )
+    robot.step(1100)
+    move_arm(theta1-0.3, theta2, theta3, theta4, theta5+0.35, -np.pi/2  )
+    robot.step(1100)
+
+    # return water bottle
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5+0.35, theta6  )
+    robot.step(1100)
+    move_arm(-np.pi/3-0.02, -np.pi, 0, np.pi, 0, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+    robot.step(1100)
+    move_arm(0, -np.pi, 0, np.pi, 0.1, 0)
+    robot.step(1100)
+    move_arm(0, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+
+    # get beer bottle
+    move_arm(-np.pi, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+    move_arm(-np.pi, 0, 0, 0, 0, 0)
+    robot.step(1100)
+    move_arm(-3/4*np.pi+0.03, 0, 0, 0, -np.pi/5, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=1, angle8=1, angle9=1, angle10=0, angle11=0)
+    robot.step(1100)
+    theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.3)
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5, theta6  )
+    robot.step(1100)
+    move_arm(theta1-0.2, theta2, theta3, theta4, theta5+0.35, -np.pi/2  )
+    robot.step(1100)
+
+    # return beer bottle
+    move_arm(theta1-0.5, theta2, theta3, theta4, theta5+0.35, theta6  )
+    robot.step(1100)
+    move_arm(-3/4*np.pi+0.03, 0, 0, 0, -np.pi/5, 0)
+    robot.step(1100)
+    grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)
+    robot.step(1100)
+    move_arm(-np.pi, 0, 0, 0, 0, 0.1)
+    robot.step(1100)
+    move_arm(-np.pi, 0, -np.pi/2, 0, 0, 0)
+    robot.step(1100)
+else:
+    raise ValueError("unknown input")
+# grab the cup again
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0, 0.1)
+move_arm(theta1, theta2, theta3, theta4, theta5-0.4, theta6 )
+robot.step(1100)
+
+theta1, theta2, theta3, theta4, theta5, theta6 = inverse(0.3, 0.1, 0.1)
+move_arm(theta1+0.1, theta2, theta3, theta4, theta5-0.05, theta6  )
+robot.step(1100)
+grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0.4, angle5=0.4, angle6=0.4, angle7=0.5, angle8=0.5, angle9=0.5, angle10=0, angle11=0)
+robot.step(1100)
+move_arm(0,0,0,0,np.pi/2,0)
+robot.step(1100)
+grap(angle1=-0.3, angle2=-0.3, angle3=-0.3, angle4=0, angle5=0, angle6=0, angle7=0, angle8=0, angle9=0, angle10=0, angle11=0)

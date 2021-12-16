@@ -56,14 +56,49 @@ def Get_MS():
 """
 Function that calculates an elbow up Inverse Kinematic solution for the UR3
 """
-def inverse(thetalist, T):
+def inverse(X, Y, Z):
+    L1 = 0.152
+    L3 = 0.244
+    L5 = 0.213
+    L6 = 0.083
+    L7 = 0.083
+
+    Xcen = X
+    Ycen = Y - 0.228
+    Zcen = Z + 0.083
+
+    # find theta 1
+    cen_len = np.sqrt( (Xcen ** 2 + Ycen ** 2) )
+    small_theta = np.degrees( np.arcsin( (0.027+0.083) / cen_len ) )
+    big_theta = np.degrees(np.arctan2(Ycen, Xcen))
+    theta1 =  (big_theta - small_theta)
+
+    # find 3end
+    ext_3end = np.sqrt( Xcen ** 2 + Ycen ** 2 - (0.027+0.083)**2 )
+    X3end = np.cos( np.radians(theta1) ) * ext_3end
+    Y3end = np.sin( np.radians(theta1) ) * ext_3end
+    Z3end = Zcen
+    
+    # find theta 3
+    c = np.sqrt((np.sqrt(X3end ** 2 + Y3end ** 2))**2 + (Z3end - L1)**2)
+    theta3 = 180 - np.degrees(np.arccos( (L3 ** 2 + L5 ** 2 - c ** 2)/(2* L3 * L5) ) )
+
+    # find theta 2
+    theta2_small =np.degrees( np.arctan2((Z3end-L1), (np.sqrt(X3end ** 2 + Y3end ** 2) ) ))
+    theta2_big = np.degrees( np.arccos( (L3 ** 2 + c ** 2 - L5 ** 2)/(2* L3 * c) ) )
+    theta2 = -(theta2_small+theta2_big)
+
+
+    # find theta 4
+    theta4 = -theta2 - theta3
+
+    # define theta 5 6 = 0
+    theta5 = 0
+    theta6 = 0
+
+
     M, S = Get_MS()
     S = S.T
-    print(S)
-    eomg = 0.01
-    ev = 0.001
 
-    angles = mr.IKinBody(S, M, T, thetalist, eomg, ev)
-
-    return angles
+    return ( np.radians(theta1), np.radians(theta2), np.radians(theta3), np.radians(theta4), np.radians(theta5), np.radians(theta6))
     
